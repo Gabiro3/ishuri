@@ -1,0 +1,109 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block content %}
+<div class="sidebar">
+    <a href="#" class="logo">
+        <i class='bx bx-code-alt'></i>
+        <div class="logo-name"><span>Ishuri</span>Bridge</div>
+    </a>
+    <ul class="side-menu">
+        <li><a href="{% url 'teacher' %}"><i class='bx bxs-dashboard'></i>Dashboard</a></li>
+        <li class="active"><a href="{% url 'add-assignment' %}"><i class='bx bx-store-alt'></i>Assignments</a></li>
+        <li><a href="#"><i class='bx bx-analyse'></i>Announcements</a></li>
+        <li><a href="{% url 'view-activities'%}"><i class='bx bx-list-ul'></i>Activities</a></li>
+        <li><a href="{% url 'classes-view' %}"><i class='bx bx-group'></i>Classes</a></li>
+        <li><a href="{% url 'user-profile' request.user.id %}"><i class='bx bx-cog'></i>Settings</a></li>
+    </ul>
+    <ul class="side-menu">
+        <li>
+            <a href="{% url 'logout' %}" class="logout">
+                <i class='bx bx-log-out-circle'></i>
+                Logout
+            </a>
+        </li>
+    </ul>
+</div>
+<div class="content">
+    <!-- Navbar -->
+    <!-- End of Navbar -->
+
+    <main>
+        <div class="header">
+            <div class="left">
+                <h1>Dashboard</h1>
+                <ul class="breadcrumb">
+                    <li><a href="#">
+                            Teacher
+                        </a></li>
+                    /
+                    <li><a href="" class="active">Assignment</a></li>
+                </ul>
+            </div>
+            <a href="{% url 'add-assignment' %}" class="report">
+                <i class='bx bx-cloud-download'></i>
+                <span>Add Assignment</span>
+            </a>
+        </div>
+        <!-- End of Insights -->
+
+        <div class="bottom-data">
+            <div class="orders">
+                <div class="header">
+                    <i class='bx bx-receipt'></i>
+                    <h3>Recent Assignments</h3>
+                    <i class='bx bx-filter'></i>
+                    <i class='bx bx-search'></i>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Details</th>
+                            <th>Assigned Class</th>
+                            <th>Submission Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for assignment in assignments %}
+                        <tr>
+                            <td>
+                                <p>{{assignment.name}}</p>
+                            </td>
+                            <td>S{{assignment.assigned_class}}</td>
+                            <td>{{assignment.submission_date}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Reminders -->
+            <div class="reminders">
+                <div class="header">
+                    <i class='bx bx-note'></i>
+                    <h3>Remiders</h3>
+                    <i class='bx bx-filter'></i>
+                    <i class='bx bx-plus'></i>
+                </div>
+                <ul class="task-list">
+                    {% for event in events %}
+                    <li class="completed">
+                        <div class="task-title">
+                            <i class='bx bx-check-circle'></i>
+                            <p>{{event.name}}</p>
+                        </div>
+                        <i class='bx bx-dots-vertical-rounded'></i>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <!-- End of Reminders-->
+
+        </div>
+
+    </main>
+
+</div>
+
+
+{% endblock content %}

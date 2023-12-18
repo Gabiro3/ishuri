@@ -1,0 +1,110 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block content %}
+<div class="sidebar">
+    <a href="#" class="logo">
+        <i class='bx bx-code-alt'></i>
+        <div class="logo-name"><span>Ishuri</span>Bridge</div>
+    </a>
+    <ul class="side-menu">
+        <li><a href="{% url 'teacher' %}"><i class='bx bxs-dashboard'></i>Dashboard</a></li>
+        <li><a href="{% url 'view-assignments' %}"><i class='bx bx-store-alt'></i>Assignments</a></li>
+        <li><a href="#"><i class='bx bx-analyse'></i>Announcements</a></li>
+        <li><a href="{% url 'view-activities'%}"><i class='bx bx-list-ul'></i>Activities</a></li>
+        <li class="active"><a href="{% url 'classes-view' %}"><i class='bx bx-group'></i>Classes</a></li>
+        <li><a href="{% url 'user-profile' request.user.id %}"><i class='bx bx-cog'></i>Settings</a></li>
+    </ul>
+    <ul class="side-menu">
+        <li>
+            <a href="{% url 'logout' %}" class="logout">
+                <i class='bx bx-log-out-circle'></i>
+                Logout
+            </a>
+        </li>
+    </ul>
+</div>
+<div class="content">
+    <!-- Navbar -->
+
+    <!-- End of Navbar -->
+
+    <main>
+        <div class="header">
+            <div class="left">
+                <h1>Classes</h1>
+                <ul class="breadcrumb">
+                    <li><a href="#">
+                            Dashboard
+                        </a></li>
+                    /
+                    <li><a href="#" class="active">Classes</a></li>
+                </ul>
+            </div>
+            <a href="{% url 'add-class' %}" class="report">
+                <i class='bx bx-cloud-download'></i>
+                <span>Add Class</span>
+            </a>
+        </div>
+
+        <div class="bottom-data">
+            <div class="orders">
+                <div class="header">
+                    <i class='bx bx-receipt'></i>
+                    <h3>My Classes</h3>
+                    <i class='bx bx-filter'></i>
+                    <i class='bx bx-search'></i>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Day</th>
+                            <th>School</th>
+                            <th>Class</th>
+                            <th>Class Hour</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for class in classes %}
+                        <tr>
+                            <td><strong>{{class.day}}</strong></td>
+                            <td>{{class.school}}</td>
+                            <td>{{class.name}}</td>
+                            <td>{{class.hour}}</td>
+                            <td><a><i class='bx bx-trash' style="color: rgb(241, 31, 31);"></i></a></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Reminders -->
+            <div class="reminders">
+                <div class="header">
+                    <i class='bx bx-note'></i>
+                    <h3>Today's Classes</h3>
+                    <i class='bx bx-filter'></i>
+                    <a href="{% url 'create-event' %}"><i class='bx bx-plus'></i></a>
+                </div>
+                <ul class="task-list">
+                    {% for class in  classes_today %}
+                    <li class="completed">
+                        <div class="task-title">
+                            <i class='bx bx-check-circle'></i>
+                            <p>{{class.name}}</p>
+                        </div>
+                        <strong><p>At: {{class.hour}}</p></strong>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <!-- End of Reminders-->
+
+        </div>
+
+    </main>
+
+</div>
+
+
+{% endblock content %}

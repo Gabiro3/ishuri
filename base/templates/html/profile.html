@@ -1,0 +1,124 @@
+{% extends 'main-2.html' %}
+{% block content %}
+<div class="sidebar">
+  <a href="#" class="logo">
+      <i class='bx bx-code-alt'></i>
+      <div class="logo-name"><span>Ishuri</span>Bridge</div>
+  </a>
+  <ul class="side-menu">
+    <li><a href="{% url 'teacher' %}"><i class='bx bxs-dashboard'></i>Dashboard</a></li>
+    <li><a href="{% url 'add-assignment' %}"><i class='bx bx-task'></i>Assignments</a></li>
+    <li><a href="#"><i class='bx bx-analyse'></i>Announcements</a></li>
+    <li><a href="{% url 'view-activities'%}"><i class='bx bx-list-ul'></i>Activities</a></li>
+    <li><a href="{% url 'classes-view' %}"><i class='bx bx-group'></i>Classes</a></li>
+    <li class="active"><a href="#"><i class='bx bx-cog'></i>Settings</a></li>
+</ul>
+  <ul class="side-menu">
+      <li>
+          <a href="{% url 'logout' %}" class="logout">
+              <i class='bx bx-log-out-circle'></i>
+              Logout
+          </a>
+      </li>
+  </ul>
+</div>
+<div>
+<main class="profile-page layout layout--3">
+  <div class="container">
+    <!-- Room List Start -->
+    <div class="roomList">
+      <div class="profile">
+        <div class="profile__avatar">
+          <div class="profile-card">
+            <img src="{{user.avatar.url}}" alt="Profile Picture" class="profile-picture">
+            <div class="card-body">
+              <div class="profile__info">
+                <h3 style="text-align: center;">{{user.name}}</h3>
+                <p style="text-align: center;">@{{user.name}}</p>
+                {% if request.user == user %}
+                <a href="{% url 'update-user' %}" class="btn btn--main btn--pill">Edit Profile</a>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Activities End -->
+  </div>
+  <style>
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .profile-card {
+      width: 300px;
+      margin: 0 auto;
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+      border-radius: 10px;
+    }
+
+    .profile-picture {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      margin: 0 auto;
+      object-fit: cover;
+    }
+
+  
+    .container {
+      max-width: 120rem;
+      width: 90%;
+    }
+  
+    .profile {
+      margin-bottom: 3rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .profile__avatar {
+      text-align: center;
+    }
+  
+    .profile__info {
+      text-align: center;
+    }
+  
+    .profile__info h3 {
+      font-size: 2rem;
+      color: var(--color-light);
+      font-weight: 400;
+    }
+  
+    .profile__info p {
+      color: var(--color-main);
+      font-weight: 500;
+      margin-bottom: 1rem;
+    }
+  
+    .profile__about {
+      margin-top: 2rem;
+    }
+  
+    .profile__about h3 {
+      text-transform: uppercase;
+      color: var(--color-dark-light);
+      margin-bottom: 0.5rem;
+    }
+  
+    .profile-page .roomList__header {
+      margin-bottom: 1.5rem;
+    }
+  
+    .profile-page .roomList__header h2 {
+      color: var(--color-dark-light);
+    }
+  </style>
+</main>
+{% endblock content %}
