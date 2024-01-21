@@ -194,6 +194,21 @@ def viewActivities(request):
     context = {'events': events, 'announcements': announcements, 'activities_today': activities_today, 'activities': activities}
 
     return render(request, 'html/schedule-view.html', context)
+
+@login_required(login_url='login')
+def updateActivity(request, pk):
+    event = Event.objects.get(id=pk)
+    form = EventForm(instance=event)
+
+    if request.method == 'POST':
+        form = EventForm(request.POST,instance=event)
+        if form.is_valid():
+            form.save()
+            return redirect('view-activities')
+        else:
+            messages.error(request, "Something wrong with the new data!")
+
+    return render(request, 'html/update-user.html', {'form': form})
 @login_required(login_url='login')
 def viewAssignments(request):
     assignments = Assignment.objects.filter(host=request.user)
@@ -201,6 +216,20 @@ def viewAssignments(request):
     context = {'assignments': assignments, 'announcements': announcements,}
 
     return render(request, 'html/assignments-view.html', context)
+@login_required(login_url='login')
+def updateAssignment(request, pk):
+    assignment = Assignment.objects.get(id=pk)
+    form = AssignmentForm(instance=assignment)
+
+    if request.method == 'POST':
+        form = AssignmentForm(request.POST,instance=assignment)
+        if form.is_valid():
+            form.save()
+            return redirect('view-assignments')
+        else:
+            messages.error(request, "Something wrong with the new data!")
+
+    return render(request, 'html/update-user.html', {'form': form})
 
 
 @login_required(login_url='login')
@@ -215,6 +244,21 @@ def addClass(request):
         return redirect('classes-view')
     context = {'form': form}
     return render(request, 'html/add-class.html', context)
+
+@login_required(login_url='login')
+def updateClass(request, pk):
+    class_instance = MyClasses.objects.get(id=pk)
+    form = ClassesForm(instance=class_instance)
+
+    if request.method == 'POST':
+        form = ClassesForm(request.POST,instance=class_instance)
+        if form.is_valid():
+            form.save()
+            return redirect('classes-view')
+        else:
+            messages.error(request, "Something wrong with the new data!")
+
+    return render(request, 'html/update-user.html', {'form': form})
 
 
 

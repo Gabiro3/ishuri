@@ -46,6 +46,7 @@ class Assignment(models.Model):
     assigned_class = models.IntegerField(null=True)
     submission_date = models.CharField(max_length=300, null=True)
     uploaded = models.DateTimeField(auto_now=True)
+    submitted = models.CharField(max_length=50, default='False')
 
     class Meta:
         ordering = ['-uploaded']
@@ -58,8 +59,9 @@ class Assignment(models.Model):
 
 class Event(models.Model):
     host = models.ForeignKey(Teacher, on_delete=models.CASCADE, null=True)
-    name = models.CharField(max_length=200, null=False)
+    name = models.CharField(max_length=200, null=True)
     description = models.TextField(null=False)
+    hour = models.CharField(max_length=100, null=True)
     day = models.CharField(max_length=200,null=True)
 
     def __str__(self):
@@ -70,7 +72,8 @@ class Event(models.Model):
 class MyClasses(models.Model):
     host = models.ForeignKey(Teacher, on_delete=models.CASCADE, null=True)
     name = models.CharField(max_length=200, null=False)
-    hour = models.CharField(max_length=100, null=False)
+    description = models.CharField(max_length=300, null=True)
+    hour = models.CharField(max_length=100, null=True)
     school = models.CharField(max_length=200, null=True)
     day = models.CharField(max_length=200, null=True)
 

@@ -70,7 +70,8 @@
                             <td>{{class.school}}</td>
                             <td>{{class.name}}</td>
                             <td>{{class.hour}}</td>
-                            <td><a><i class='bx bx-trash' style="color: rgb(241, 31, 31);"></i></a></td>
+                            <td><a href="{% url 'update-class' class.id %}"><i class='bx bx-pen' style="color: rgb(31, 129, 241);"></i></a></td>
+                            <td><a href="{% url 'delete-class' class.id %}"><i class='bx bx-trash' style="color: rgb(241, 31, 31);"></i></a></td>
                         </tr>
                         {% endfor %}
                     </tbody>

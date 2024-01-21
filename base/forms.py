@@ -21,12 +21,12 @@ class AssignmentForm(ModelForm):
 class EventForm(ModelForm):
     class Meta:
         model = Event
-        fields = ['name', 'description', 'day']
+        fields = ['name', 'description', 'hour' , 'day']
 
 class ClassesForm(ModelForm):
     class Meta:
         model = MyClasses
-        fields = ['name', 'hour', 'school', 'day']
+        fields = ['name', 'hour', 'description' ,  'school', 'day']
 
 class ScheduleForm(ModelForm):
     class Meta:
