@@ -7,6 +7,8 @@ from django.db.models import Q
 from .models import *
 from .forms import *
 from datetime import datetime
+import logging
+logger = logging.getLogger(__name__)
 def loginPage(request):
     page = 'login'
     if request.user.is_authenticated:
@@ -22,6 +24,7 @@ def loginPage(request):
         user = authenticate(request, email=name, password=password)
         if user is not None:
             login(request, user)
+            logger.info(f"User {user.get_username()} - Logged In")
             return redirect('teacher')
         else:
             messages.error(request, 'Invalid Login credentials')
