@@ -1,1 +1,250 @@
+Certainly! To implement browser notifications in Django, you can follow these general steps:
 
+1. **Include JavaScript for Notifications:**
+   Start by including the necessary JavaScript code in your HTML templates. You can use the `Notification` API for this. Make sure to check if the browser supports notifications and request permission from the user.
+
+   ```html
+   <!-- Include this script in your HTML template -->
+   <script>
+       if ("Notification" in window) {
+           Notification.requestPermission();
+       }
+   </script>
+   ```
+
+2. **Create a Django View:**
+   Create a Django view that will be responsible for triggering the notification. This view will render the template with the JavaScript code.
+
+   ```python
+   # views.py
+   from django.shortcuts import render
+
+   def notification_view(request):
+       return render(request, 'your_template.html')
+   ```
+
+3. **Set Up URL Mapping:**
+   Map the view to a URL in your `urls.py` file.
+
+   ```python
+   # urls.py
+   from django.urls import path
+   from .views import notification_view
+
+   urlpatterns = [
+       # Other URL patterns
+       path('notifications/', notification_view, name='notification_view'),
+   ]
+   ```
+
+4. **Handle Notification Logic in JavaScript:**
+   In your HTML template, include JavaScript code to handle the notification logic. For example, you can trigger a notification when the page loads.
+
+   ```html
+   <!-- your_template.html -->
+   {% extends 'base.html' %}
+
+   {% block content %}
+       <!-- Your page content goes here -->
+
+       <script>
+           document.addEventListener('DOMContentLoaded', function () {
+               if (Notification.permission === 'granted') {
+                   new Notification('Hello, this is a notification!');
+               }
+           });
+       </script>
+   {% endblock %}
+   ```
+
+5. **Testing:**
+   Run your Django development server and navigate to the URL you specified in the `urls.py`. You should see a notification if your browser supports it and the permission is granted.
+
+Remember to customize the JavaScript code based on your specific requirements. This example is a basic setup, and you can enhance it further by adding dynamic content, handling user interactions, and more.
+
+
+<!-- Tooltip with a List of Items using HTML, CSS, and JavaScript -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tooltip Example</title>
+    <style>
+        /* Tooltip container styles */
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        /* Tooltip text styles */
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 200px;
+            background-color: #333;
+            color: #fff;
+            text-align: left;
+            border-radius: 6px;
+            padding: 10px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -100px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        /* Show the tooltip text when hovering over the container */
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        /* Style for the list inside the tooltip */
+        .tooltip .tooltiptext ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .tooltip .tooltiptext li {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="tooltip">
+        Hover over me
+        <div class="tooltiptext">
+            <ul>
+                <li>Item 1</li>
+                <li>Item 2</li>
+                <li>Item 3</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
+
+
+INFO 2024-01-22 18:55:50,585 "GET /teacher/ HTTP/1.1" 200 6345
+INFO 2024-01-22 18:56:23,754 "GET /teacher/ HTTP/1.1" 200 6348
+INFO 2024-01-22 18:59:37,592 "GET /teacher/ HTTP/1.1" 200 6478
+INFO 2024-01-22 19:00:33,603 "GET /teacher/ HTTP/1.1" 200 6483
+INFO 2024-01-22 19:01:40,192 "GET /teacher/ HTTP/1.1" 200 6719
+INFO 2024-01-22 19:02:50,082 "GET /teacher/ HTTP/1.1" 200 6748
+INFO 2024-01-22 19:03:01,642 "GET /teacher/ HTTP/1.1" 200 6748
+INFO 2024-01-22 19:03:43,794 "GET /teacher/ HTTP/1.1" 200 6747
+INFO 2024-01-22 19:03:59,245 "GET /teacher/ HTTP/1.1" 200 6748
+INFO 2024-01-22 19:04:10,717 "GET /teacher/ HTTP/1.1" 200 6749
+INFO 2024-01-22 19:04:38,791 "GET /teacher/ HTTP/1.1" 200 6749
+INFO 2024-01-22 19:04:56,737 "GET /teacher/ HTTP/1.1" 200 6748
+INFO 2024-01-22 19:05:07,601 "GET /teacher/ HTTP/1.1" 200 6749
+INFO 2024-01-22 19:05:17,083 "GET /teacher/ HTTP/1.1" 200 6749
+INFO 2024-01-22 19:05:26,940 "GET /teacher/ HTTP/1.1" 200 6748
+INFO 2024-01-22 19:05:42,424 "GET /teacher/ HTTP/1.1" 200 6747
+INFO 2024-01-22 19:05:59,657 "GET /teacher/ HTTP/1.1" 200 6747
+INFO 2024-01-22 19:06:11,762 "GET /teacher/ HTTP/1.1" 200 6748
+INFO 2024-01-22 19:06:57,883 "GET /teacher/ HTTP/1.1" 200 6909
+INFO 2024-01-22 19:07:07,624 "GET /activities/ HTTP/1.1" 200 4206
+INFO 2024-01-22 19:07:11,421 "GET /teacher/ HTTP/1.1" 200 6909
+INFO 2024-01-22 19:08:22,005 C:\Users\USER\Desktop\Projects\Apps\Django\Ishuri\base\views.py changed, reloading.
+INFO 2024-01-22 19:08:27,753 Watching for file changes with StatReloader
+INFO 2024-01-22 19:08:39,928 C:\Users\USER\Desktop\Projects\Apps\Django\Ishuri\base\views.py changed, reloading.
+INFO 2024-01-22 19:08:43,431 Watching for file changes with StatReloader
+ERROR 2024-01-22 19:08:54,913 Internal Server Error: /teacher/
+Traceback (most recent call last):
+  File "C:\Users\USER\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\USER\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\USER\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\USER\Desktop\Projects\Apps\Django\Ishuri\base\views.py", line 77, in teacher
+    return render(request, 'html/teacher-view.html', context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\USER\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\USER\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\USER\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\USER\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\USER\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\USER\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\USER\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\USER\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\django\template\loader_tags.py", line 157, in render
+    return compiled_parent._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\USER\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\USER\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\USER\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\USER\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\django\template\loader_tags.py", line 63, in render
+    result = block.nodelist.render(context)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\USER\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\USER\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\USER\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\site-packages\django\template\defaulttags.py", line 193, in render
+    values = list(values)
+             ^^^^^^^^^^^^
+TypeError: 'Event' object is not iterable
+ERROR 2024-01-22 19:08:54,928 "GET /teacher/ HTTP/1.1" 500 162332
+INFO 2024-01-22 19:09:19,606 "GET /teacher/ HTTP/1.1" 200 6978
+INFO 2024-01-22 19:09:52,755 "GET /teacher/ HTTP/1.1" 200 6995
+INFO 2024-01-22 19:09:58,796 "GET /logout/ HTTP/1.1" 302 0
+INFO 2024-01-22 19:09:58,839 "GET / HTTP/1.1" 200 2681
+INFO 2024-01-23 18:04:18,320 Watching for file changes with StatReloader
+INFO 2024-01-23 18:04:49,579 "GET / HTTP/1.1" 200 2681
+INFO 2024-01-23 18:05:05,413 "POST / HTTP/1.1" 302 0
+INFO 2024-01-23 18:05:05,659 "GET /teacher/ HTTP/1.1" 200 6995
+INFO 2024-01-23 18:08:51,183 "GET /teacher/ HTTP/1.1" 200 7320
+INFO 2024-01-23 18:09:08,413 "GET /teacher/ HTTP/1.1" 200 7320
+INFO 2024-01-23 18:09:15,971 "GET /teacher/ HTTP/1.1" 200 7320
+INFO 2024-01-23 18:16:16,501 "GET /teacher/ HTTP/1.1" 200 7561
+INFO 2024-01-23 18:17:13,757 "GET /teacher/ HTTP/1.1" 200 7603
+INFO 2024-01-23 18:18:00,193 "GET /teacher/ HTTP/1.1" 200 7603
+INFO 2024-01-23 18:18:16,599 "GET /assignments/ HTTP/1.1" 200 4488
+INFO 2024-01-23 18:19:21,706 "GET /teacher/ HTTP/1.1" 200 7603
+INFO 2024-01-23 18:22:09,715 "GET /teacher/ HTTP/1.1" 200 9104
+INFO 2024-01-23 18:22:13,788 "GET /assignments/ HTTP/1.1" 200 4488
+INFO 2024-01-23 18:22:15,439 "GET /teacher/ HTTP/1.1" 200 9104
+INFO 2024-01-23 18:22:35,706 "GET /activities/ HTTP/1.1" 200 4313
+INFO 2024-01-23 18:22:37,897 "GET /teacher/ HTTP/1.1" 200 9104
+INFO 2024-01-23 18:22:40,517 "GET /classes/ HTTP/1.1" 200 5238
+INFO 2024-01-23 18:22:42,294 "GET /teacher/ HTTP/1.1" 200 9104
+INFO 2024-01-23 18:23:09,596 "GET / HTTP/1.1" 302 0
+INFO 2024-01-23 18:23:09,630 "GET /teacher/ HTTP/1.1" 200 9104
+INFO 2024-01-23 18:23:13,910 "GET /teacher/ HTTP/1.1" 200 9104
+INFO 2024-01-23 18:23:14,728 "GET /teacher/ HTTP/1.1" 200 9104
+INFO 2024-01-23 18:23:15,492 "GET /teacher/ HTTP/1.1" 200 9104
+INFO 2024-01-23 18:23:18,104 "GET /logout/ HTTP/1.1" 302 0
+INFO 2024-01-23 18:23:18,124 "GET / HTTP/1.1" 200 2681
+INFO 2024-01-23 18:23:25,700 "GET / HTTP/1.1" 200 2681
+INFO 2024-01-23 18:23:39,949 "POST / HTTP/1.1" 302 0
+INFO 2024-01-23 18:23:39,998 "GET /teacher/ HTTP/1.1" 200 9104

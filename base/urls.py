@@ -26,7 +26,7 @@ urlpatterns = [
     path('delete-schedule/<str:pk>/', views.deleteSchedule, name="delete-schedule"),
 
     path('add-class/', views.addClass, name="add-class"),
-    path('delete-schedule/<str:pk>/', views.deleteSchedule, name="delete-class"),
     path('classes/', views.viewClasses, name="classes-view"),
     path('update-class/<str:pk>/', views.updateClass, name="update-class"),
+    path('delete-class/<str:pk/', views.deleteClass, name="delete-class"),
 ]

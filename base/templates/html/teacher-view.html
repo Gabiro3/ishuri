@@ -54,6 +54,13 @@
                 <span class="info">
                     <h3>{{ assignments.count }}</h3>
                     <p>Assignments</p>
+                    <div class="tooltiptext">
+                        <ul>
+                            {% for assignment in assignments %}
+                            <li>{{assignment.name}}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
                 </span>
             </li>
             <li>
@@ -61,6 +68,13 @@
                 <span class="info">
                     <h3>{{ classes_today.count }}</h3>
                     <p>Classes</p>
+                    <div class="tooltiptext">
+                        <ul>
+                            {% for class in classes %}
+                            <li>{{class.name}} @{{class.hour}}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
                 </span>
             </li>
             <li>
@@ -68,6 +82,13 @@
                 <span class="info">
                     <h3>{{ activities_today.count }}</h3>
                     <p>Activities</p>
+                    <div class="tooltiptext">
+                        <ul>
+                            {% if activities %}
+                            <li>{{activities.name}} @{{activities.hour}}</li>
+                            {% endif %}
+                        </ul>
+                    </div>
                 </span>
             </li>
             <li>
@@ -138,6 +159,93 @@
     </main>
 
 </div>
+<style>
+    /* Tooltip container styles */
+    .info {
+        position: relative;
+        display: inline-block;
+        cursor: pointer;
+    }
+
+    /* Tooltip text styles */
+    .info .tooltiptext {
+        visibility: hidden;
+        width: 200px;
+        border-radius: 30px;
+        background-color: #1975d1ff;
+        color: #131212;
+        text-align: left;
+        border-radius: 6px;
+        padding: 10px;
+        position: absolute;
+        z-index: 1;
+        bottom: -60%;
+        left: 50%;
+        margin-left: -100px;
+        opacity: 0;
+        transition: opacity 0.3s;
+    }
+
+    /* Show the tooltip text when hovering over the container */
+    .info:hover .tooltiptext {
+        visibility: visible;
+        opacity: 1;
+    }
+
+    /* Style for the list inside the tooltip */
+    .info .tooltiptext ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .info .tooltiptext li {
+        margin-bottom: 5px;
+    }
+</style>
+<!-- Updated JavaScript for Greeting and Activity Count -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Check if the script has already been run
+        if (localStorage.getItem('greetingShown') !== 'true') {
+            // Check if the Notification API is supported
+            if ("Notification" in window) {
+                // Request permission for notifications
+                Notification.requestPermission().then(function (permission) {
+                    if (permission === 'granted') {
+                        // Get the current hour
+                        var hour = new Date().getHours();
+
+                        // Determine the greeting based on the time of day
+                        var greeting;
+                        if (hour < 12) {
+                            greeting = "Good Morning";
+                        } else if (hour >= 12 && hour < 18) {
+                            greeting = "Good Afternoon";
+                        } else {
+                            greeting = "Good Evening";
+                        }
+
+                        // Get the user's name from Django's request.user
+                        var loggedInUserName = "{{ request.user.username }}";  // Replace with your Django template syntax
+
+                        // Get the activities count from Django's context
+                        var activitiesCount = '{{ activities_today.count }}';  // Replace with your Django template syntax
+
+                        // Create the notification message
+                        var notificationMessage = `${greeting} ${loggedInUserName}, You have ${activitiesCount} Activities on the list today.`;
+
+                        // Display the notification
+                        new Notification(notificationMessage);
+
+                        // Set the flag in localStorage to indicate that the script has been run
+                        localStorage.setItem('greetingShown', 'true');
+                    }
+                });
+            }
+        }
+    });
+</script>
 
 
 {% endblock content %}

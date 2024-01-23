@@ -59,6 +59,7 @@
                         <tr>
                             <th>Day</th>
                             <th>Activity</th>
+                            <th>Hour</th>
                             
                         </tr>
                     </thead>
@@ -67,7 +68,8 @@
                         <tr>
                             <td><strong>{{field.day}}</strong></td>
                             <td>{{field.name}}</td>
-                            <td><a><i class='bx bx-trash' style="color: rgb(241, 31, 31);"></i></a></td>
+                            <td>{{field.hour}}</td>
+                            <td><a href="{% url 'delete-event' field.id %}"><i class='bx bx-trash' style="color: rgb(241, 31, 31);"></i></a></td>
                         </tr>
                         {% endfor %}
                     </tbody>

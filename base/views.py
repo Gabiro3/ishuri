@@ -24,7 +24,6 @@ def loginPage(request):
         user = authenticate(request, email=name, password=password)
         if user is not None:
             login(request, user)
-            logger.info(f"User {user.get_username()} - Logged In")
             return redirect('teacher')
         else:
             messages.error(request, 'Invalid Login credentials')
@@ -63,6 +62,7 @@ def teacher(request):
     classes_today = MyClasses.objects.filter(owner & current_time)
     activities_today = Event.objects.filter(owner & current_time)
     assignments = Assignment.objects.filter(host=request.user)
+    activities = Event.objects.get(host = request.user)
     events = Event.objects.filter(host=request.user)
     announcements = Announcement.objects.all()
     classes = MyClasses.objects.all()
@@ -72,6 +72,7 @@ def teacher(request):
                   , 'classes': classes,
                     'classes_today': classes_today,
                       'activities_today': activities_today,
+                      'activities': activities,
                       'date': current_date, 'month': current_month}
     return render(request, 'html/teacher-view.html', context)
 
@@ -113,11 +114,9 @@ def createAssignment(request):
 
 @login_required(login_url='login')
 def deleteAssignment(request, pk):
-    assignment = Assignment.objects.get(school_id=pk)
-    if request.method == 'POST':
-        assignment.delete()
-        return redirect('teacher')
-    return render(request, 'html/assignments-view.html', {'obj': assignment})
+    assignment = Assignment.objects.get(id=pk)
+    assignment.delete()
+    return redirect('view-assignments')
 
 @login_required(login_url='login')
 def createEvent(request):
@@ -138,11 +137,8 @@ def deleteEvent(request, pk):
     event = Event.objects.get(id=pk)
     if request.user != event.host:
         return HttpResponse("You don't have enough privileges to perform this action")
-    if request.method == 'POST':
-        event.delete()
-        return redirect('teacher')
-    
-    return render(request, 'html/events-view.html', {'obj': event})
+    event.delete()
+    return redirect('view-activities')
 
 @login_required(login_url='login')
 def createSchedule(request):
@@ -259,6 +255,12 @@ def updateClass(request, pk):
             messages.error(request, "Something wrong with the new data!")
 
     return render(request, 'html/update-user.html', {'form': form})
+
+@login_required(login_url='login')
+def deleteClass(request, pk):
+    assignment = MyClasses.objects.get(id=pk)
+    assignment.delete()
+    return redirect('classes-view')
 
 
 
