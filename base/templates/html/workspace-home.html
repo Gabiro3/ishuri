@@ -1,0 +1,69 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block content %}
+<!-- Sidebar -->
+<div class="sidebar">
+    <a href="#" class="logo">
+        <i class='bx bx-book-reader'></i>
+        <div class="logo-name"><span>Ishuri</span>Bridge</div>
+    </a>
+    <ul class="side-menu">
+        <li class="active"><a href="{% url 'teacher' %}"><i class='bx bxs-dashboard'></i>Dashboard</a></li>
+        <li><a href="{% url 'view-assignments' %}"><i class='bx bx-task'></i>Assignments</a></li>
+        <li><a href="#"><i class='bx bx-analyse'></i>Announcements</a></li>
+        <li><a href="{% url 'view-activities'%}"><i class='bx bx-list-ul'></i>Activities</a></li>
+        <li><a href="{% url 'classes-view' %}"><i class='bx bx-group'></i>Classes</a></li>
+        <li><a href="{% url 'workspace' %}"><i class='bx bx-file'></i>WorkSpaces</a></li>
+        <li><a href="{% url 'user-profile' request.user.id%}"><i class='bx bx-cog'></i>Settings</a></li>
+    </ul>
+    <ul class="side-menu">
+        <li>
+            <a href="{% url 'logout' %}" class="logout">
+                <i class='bx bx-log-out-circle'></i>
+                Logout
+            </a>
+        </li>
+    </ul>
+</div>
+<div class="content">
+    <!-- Navbar -->
+
+    <!-- End of Navbar -->
+
+    <main>
+        <div class="header">
+            <div class="left">
+                <h1>WorkSpaces</h1>
+                <ul class="breadcrumb">
+                    <li><a href="#">
+                            Analytics
+                        </a></li>
+                    /
+                    <li><a href="#" class="active">Welcome!</a></li>
+                </ul>
+            </div>
+            <a href="{% url 'create-workspace' %}" class="report">
+                <i class='bx bx-file'></i>
+                <span>Create WorkSpace</span>
+            </a>
+        </div>
+
+        <!-- Insights -->
+        <ul class="insights">
+            {% for work in workspaces %}
+            <li>
+                <span class="info">
+                    <a href="{% url 'view-work' work.title %}"><h3>{{ work.title }}</h3></a>
+                    <a href="{% url 'delete-workspace' work.id %}" style="color: red; width: 10%"><i class='bx bx-trash'></i></a>
+                    <h4 style="color: var(--primary); font-weight: 400;">{{files.count}} files</h4>
+                </span>
+            </li>
+            {% endfor %}
+        </ul>
+        
+
+    </main>
+
+</div>
+
+{% endblock content %}

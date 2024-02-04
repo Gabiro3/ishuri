@@ -29,4 +29,10 @@ urlpatterns = [
     path('classes/', views.viewClasses, name="classes-view"),
     path('update-class/<str:pk>/', views.updateClass, name="update-class"),
     path('delete-class/<str:pk/', views.deleteClass, name="delete-class"),
+
+    path('workspaces/', views.workSpace, name="workspace"),
+    path('view-work/<str:name>', views.workSpaceView, name="view-work"),
+    path('create-workspace/', views.createWorkSpace, name="create-workspace"),
+    path('add-notes/<str:name>/', views.addNote, name="add-notes"),
+    path('delete-work/<str:pk>', views.deleteWorkSpace, name='delete-workspace')
 ]

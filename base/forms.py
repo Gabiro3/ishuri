@@ -2,6 +2,7 @@ from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm
 from .models import *
 from django.contrib.auth.models import User
+from django import forms
 
 class TeacherCreationForm(UserCreationForm):
     class Meta:
@@ -31,4 +32,14 @@ class ClassesForm(ModelForm):
 class ScheduleForm(ModelForm):
     class Meta:
         fields = ['title', 'time']
+
+class WorkSpaceForm(ModelForm):
+    class Meta:
+        model = WorkSpace
+        fields = ['title']
+
+class NotesForm(ModelForm):
+    class Meta:
+        model = Notes
+        fields = ['description', 'links']
 

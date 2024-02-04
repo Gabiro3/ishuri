@@ -103,6 +103,17 @@ class Announcement(models.Model):
 
     def __str__(self):
         return self.title
+    
+
+class WorkSpace(models.Model):
+    title = models.CharField(max_length=200, null=True)
+    host = models.ForeignKey(Teacher, on_delete=models.CASCADE, null=True)
+    notes = models.ManyToManyField('Notes', related_name='related')
+
+class Notes(models.Model):
+    workspace = models.ForeignKey(WorkSpace, on_delete=models.CASCADE, null=True, related_name="workspace")
+    description = models.CharField(max_length=500, null=True)
+    links = models.CharField(max_length=200, null=True)
 
 
 

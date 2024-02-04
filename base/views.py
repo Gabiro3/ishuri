@@ -262,6 +262,79 @@ def deleteClass(request, pk):
     assignment.delete()
     return redirect('classes-view')
 
+@login_required(login_url='login')
+def workSpace(request):
+    workspaces = WorkSpace.objects.all()
+    files = ""
+    for work in workspaces:
+        notes = Notes.objects.filter(workspace=work.id)
+    context = {'workspaces': workspaces, 'files':notes}
+    return render(request, 'html/workspace-home.html', context)
+
+@login_required(login_url='login')
+def workSpaceView(request, name):
+    workspace = WorkSpace.objects.get(title=name)
+    notes = Notes.objects.filter(workspace=workspace.id)
+    context = {'notes': notes, 'name': name}
+    return render(request, 'html/view-workspace.html', context)
+
+@login_required(login_url='login')
+def createWorkSpace(request):
+    if request.method == 'POST':
+        form = WorkSpaceForm(request.POST)
+        name = request.POST.get('title')
+
+        if form.is_valid():
+            workspace = form.save()
+            messages.success(request, "Workspace created successfully!")
+            return redirect('view-work', name=name)
+        else:
+            messages.error(request, "Something wrong with the new data!")
+    else:
+        form = WorkSpaceForm()
+
+    context = {'form': form}
+    return render(request, 'html/create-workspace.html', context)
+
+@login_required(login_url='login')
+def addNote(request, name):
+    try:
+        workspace = WorkSpace.objects.get(title=name)
+    except WorkSpace.DoesNotExist:
+        # Handle the case where the workspace with the given title doesn't exist
+        messages.error(request, "Workspace not found.")
+        return redirect('some_redirect_view')  # Replace with an appropriate view
+
+    form = NotesForm()
+
+    if request.method == 'POST':
+        form = NotesForm(request.POST)
+
+        if form.is_valid():
+            # Create a new note object but don't save it to the database yet
+            note = form.save(commit=False)
+            note.workspace = workspace
+            note.save()
+
+            # Assuming you want to associate notes with the workspace using a ManyToManyField
+            workspace.notes.add(note)
+
+            messages.success(request, "Note added successfully.")
+            return redirect('view-work', name=name)
+        else:
+            # Display form validation errors
+            messages.error(request, "Invalid Input Data")
+
+    context = {'workspace': workspace, 'form': form}
+    return render(request, 'html/add-notes.html', context)
+
+
+@login_required(login_url='login')
+def deleteWorkSpace(request, pk):
+    workspace = WorkSpace.objects.get(id=pk)
+    workspace.delete()
+    return redirect('workspace')
+
 
 
 
