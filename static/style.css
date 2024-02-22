@@ -62,6 +62,23 @@ body{
     scrollbar-width: none;
     transition: all 0.3s ease;
 }
+.notification-bar {
+    background-color: rgb(35, 199, 35); /* Set the background color to green */
+    color: white; /* Set text color to white for better visibility */
+    padding: 10px 20px; /* Add padding for better spacing */
+    position: fixed; /* Fixed position to keep it in place */
+    top: 0; /* Position at the top of the viewport */
+    left: 0; /* Position at the left of the viewport */
+    width: 100%; /* Make it span the entire width of the viewport */
+    z-index: 9999; /* Set a high z-index to ensure it overlays other content */
+    display: none; /* Initially hide the notification */
+}
+
+/* Optional: Add some styles for better appearance */
+.notification-bar:hover {
+    cursor: pointer; /* Change cursor to pointer on hover */
+}
+
 
 .sidebar::-webkit-scrollbar{
     display: none;

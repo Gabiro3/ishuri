@@ -27,6 +27,7 @@ class Teacher(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     avatar = models.ImageField(null=False, default='avatar.svg')
+    is_dark = models.BooleanField(null=False, default=False)
 
     objects = CustomUserManager()
 
@@ -116,4 +117,9 @@ class Notes(models.Model):
     links = models.CharField(max_length=200, null=True)
 
 
-
+class Student(models.Model):
+    first_name = models.CharField(max_length=200, null=True)
+    last_name = models.CharField(max_length=200, null=True)
+    grade = models.IntegerField(null=True)
+    assignments = models.ManyToManyField(Assignment, related_name='assignments')
+    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, null=True)

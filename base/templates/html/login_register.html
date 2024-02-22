@@ -7,6 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/x-icon" href="../static/icon.png">
     <link rel="stylesheet" href="{% static 'style01.css' %}" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <title>Ishuri Bridge | Authentication</title>
   </head>
   <body>
@@ -16,7 +19,10 @@
         {% if messages %}
         <ul class="messages">
         {% for message in messages %}
-        <li style="color: black;">{{ message }}</li>
+        <div id="myAlert" class="alert alert-danger alert-dismissible fade in" style="position: fixed; top: 10px; right: 10px; display: none;">
+          <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+          {{message}}
+      </div>
         {% endfor %}
         </ul>
     {% endif %}
@@ -136,4 +142,13 @@
   <script>
     localStorage.setItem('greetingShown', 'false');
   </script>
+  <script>
+    // Show the alert
+    document.getElementById('myAlert').style.display = 'block';
+
+    // Hide the alert after 3 seconds
+    setTimeout(function() {
+        document.getElementById('myAlert').style.display = 'none';
+    }, 3000);
+</script>
 </html>

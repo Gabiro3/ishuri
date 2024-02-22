@@ -34,5 +34,11 @@ urlpatterns = [
     path('view-work/<str:name>', views.workSpaceView, name="view-work"),
     path('create-workspace/', views.createWorkSpace, name="create-workspace"),
     path('add-notes/<str:name>/', views.addNote, name="add-notes"),
-    path('delete-work/<str:pk>', views.deleteWorkSpace, name='delete-workspace')
+    path('delete-work/<str:pk>', views.deleteWorkSpace, name='delete-workspace'),
+
+    path('announcements/', views.Announcements, name="announcements"),
+
+    path('marks/<str:name>/', views.viewMarks, name="marks"),
+    path('add-marks/', views.CreateMarks, name="add-marks"),
+    path('view-students/<str:pk>', views.viewStudents, name="students"),
 ]

@@ -3,15 +3,16 @@
 {% block content %}
 <div class="sidebar">
     <a href="#" class="logo">
-        <i class='bx bx-code-alt'></i>
+        <i class='bx bx-book-reader'></i>
         <div class="logo-name"><span>Ishuri</span>Bridge</div>
     </a>
     <ul class="side-menu">
         <li><a href="{% url 'teacher' %}"><i class='bx bxs-dashboard'></i>Dashboard</a></li>
         <li class="active"><a href="{% url 'add-assignment' %}"><i class='bx bx-task'></i>Assignments</a></li>
-        <li><a href="#"><i class='bx bx-analyse'></i>Announcements</a></li>
+        <li><a href="{% url 'announcements' %}"><i class='bx bx-analyse'></i>Announcements</a></li>
         <li><a href="{% url 'view-activities'%}"><i class='bx bx-list-ul'></i>Activities</a></li>
         <li><a href="{% url 'classes-view' %}"><i class='bx bx-group'></i>Classes</a></li>
+        <li><a href="{% url 'workspace' %}"><i class='bx bx-file'></i>WorkSpaces</a></li>
         <li><a href="{% url 'user-profile' request.user.id %}"><i class='bx bx-cog'></i>Settings</a></li>
     </ul>
     <ul class="side-menu">
@@ -44,6 +45,11 @@
                 <span>Add Assignment</span>
             </a>
         </div>
+        <div id="notification-bar" class="notification-bar">
+            <span id="notification-message"></span>
+            <button id="close-notification">Close</button>
+        </div>
+        
         <!-- End of Insights -->
 
         <div class="bottom-data">
@@ -70,6 +76,7 @@
                             </td>
                             <td>S{{assignment.assigned_class}}</td>
                             <td>{{assignment.submission_date}}</td>
+                            <td><a href="{% url 'marks' assignment.name %}"><i class='bx bx-file' style="color: rgb(31, 241, 101);"></i></a></td>
                             <td><a href="{% url 'update-assignment' assignment.id %}"><i class='bx bx-pen' style="color: rgb(31, 129, 241);"></i></a></td>
                             <td><a href="{% url 'delete-assignment' assignment.id %}"><i class='bx bx-trash' style="color: rgb(241, 80, 31);"></i></a></td>
                         </tr>
@@ -106,6 +113,38 @@
     </main>
 
 </div>
+<script>
+    if(localStorage.getItem('theme') == 'dark') {
+        document.body.classList.add('dark');
+    } else {
+        document.body.classList.remove('dark');
+    }
+    function getQueryParam(param) {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    return urlParams.get(param);
+}
 
+function showNotification(message) {
+    var notificationBar = document.getElementById('notification-bar');
+    var notificationMessage = document.getElementById('notification-message');
+    var closeNotification = document.getElementById('close-notification');
+
+    notificationMessage.textContent = message;
+    notificationBar.style.display = 'block';
+
+    closeNotification.addEventListener('click', function() {
+        notificationBar.style.display = 'none';
+    });
+}
+
+// Get the message query parameter value from the URL
+const messageQueryParam = getQueryParam('message');
+
+// Display the message in the notification bar
+if (messageQueryParam) {
+    showNotification(messageQueryParam);
+}
+</script>
 
 {% endblock content %}

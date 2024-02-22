@@ -6,8 +6,11 @@ from django.contrib.auth import authenticate, login, logout
 from django.db.models import Q
 from .models import *
 from .forms import *
+from django.urls import reverse
 from datetime import datetime
 import logging
+import statistics
+from django.db.models import Avg
 logger = logging.getLogger(__name__)
 def loginPage(request):
     page = 'login'
@@ -55,6 +58,7 @@ def registerPage(request):
 def teacher(request):
     owner = Q(host = request.user)
     now = datetime.now()
+    message = "Welcome to Ishuri Bridge"
     current_day = now.strftime("%A")
     current_date = now.strftime("%d")
     current_month = now.strftime("%B")
@@ -66,21 +70,24 @@ def teacher(request):
     events = Event.objects.filter(host=request.user)
     announcements = Announcement.objects.all()
     classes = MyClasses.objects.all()
+    user_theme = request.user.is_dark
     context = {'assignments': assignments,
+               'theme': user_theme,
                 'events': events,
                   'announcements': announcements
                   , 'classes': classes,
                     'classes_today': classes_today,
                       'activities_today': activities_today,
                       'activities': activities,
-                      'date': current_date, 'month': current_month}
+                      'date': current_date, 'month': current_month, 'message': message}
     return render(request, 'html/teacher-view.html', context)
 
 @login_required(login_url='login')
 def userProfile(request, pk):
+    message = request.GET.get('message')
     user = Teacher.objects.get(id=pk)
     announcements = Announcement.objects.all()
-    context = {'user': user, 'announcements': announcements}
+    context = {'user': user, 'announcements': announcements, 'message': message}
     return render(request, 'html/profile.html', context)
 
 @login_required(login_url='login')
@@ -91,8 +98,12 @@ def updateUser(request):
     if request.method == 'POST':
         form = UserForm(request.POST, request.FILES, instance=user)
         if form.is_valid():
+            message = "Profile updated successfully"
+            user_id = user.id
+# Redirect with message included as a query parameter
+
             form.save()
-            return redirect('user-profile', pk=user.id)
+            return redirect(reverse('user-profile', kwargs={'pk': user_id}) + '?message=' + message)
         else:
             messages.error(request, "Something wrong with the new data!")
 
@@ -108,7 +119,8 @@ def createAssignment(request):
             assignement = form.save(commit=False)
             assignement.host = request.user
             assignement.save()
-        return redirect('teacher')
+            message = "Assignment created successfully"
+        return redirect(reverse('view-assignments') + '?message=' + message)
     context = {'form': form}
     return render(request, 'html/assignment-form.html', context)
 
@@ -128,7 +140,8 @@ def createEvent(request):
             user = form.save(commit=False)
             user.host = request.user
             user.save()
-        return redirect('teacher')
+            message = "Activity created successfully"
+        return redirect(reverse('view-activities') + '?message=' + message)
     context = {'form': form}
     return render(request, 'html/event-form.html', context)
 
@@ -148,7 +161,8 @@ def createSchedule(request):
         form = ScheduleForm(request.POST)
         if form.is_valid():
             form.save()
-        return redirect('teacher')
+            message = "Activity created successfully"
+        return redirect(reverse('view-activities') + '?message=' + message)
     context = {'form': form}
     return render(request, 'html/create-schedule.html', context)
 
@@ -159,7 +173,8 @@ def deleteSchedule(request, pk):
         return HttpResponse("You don't have enough privileges to perform this action")
     if request.method == 'POST':
         schedule.delete()
-        return redirect('teacher')
+        message = "Activity deleted successfully"
+        return redirect(reverse('view-activities') + '?message=' + message)
     
     return render(request, 'html/schedule-view.html', {'obj': schedule})
 
@@ -200,7 +215,8 @@ def updateActivity(request, pk):
         form = EventForm(request.POST,instance=event)
         if form.is_valid():
             form.save()
-            return redirect('view-activities')
+            message = "Activity updated successfully"
+            return redirect(reverse('view-activities') + '?message=' + message)
         else:
             messages.error(request, "Something wrong with the new data!")
 
@@ -221,7 +237,8 @@ def updateAssignment(request, pk):
         form = AssignmentForm(request.POST,instance=assignment)
         if form.is_valid():
             form.save()
-            return redirect('view-assignments')
+            message = "Assignment updated successfully"
+            return redirect(reverse('view-assignments') + '?message=' + message)
         else:
             messages.error(request, "Something wrong with the new data!")
 
@@ -236,8 +253,8 @@ def addClass(request):
         if form.is_valid():
             classes = form.save(commit=False)
             classes.host = request.user
-            classes.save()
-        return redirect('classes-view')
+            message = "Class created successfully"
+        return redirect(reverse('classes-view') + '?message=' + message)
     context = {'form': form}
     return render(request, 'html/add-class.html', context)
 
@@ -250,7 +267,8 @@ def updateClass(request, pk):
         form = ClassesForm(request.POST,instance=class_instance)
         if form.is_valid():
             form.save()
-            return redirect('classes-view')
+            message = "Class updated successfully"
+            return redirect(reverse('classes-view') + '?message=' + message)
         else:
             messages.error(request, "Something wrong with the new data!")
 
@@ -265,9 +283,7 @@ def deleteClass(request, pk):
 @login_required(login_url='login')
 def workSpace(request):
     workspaces = WorkSpace.objects.all()
-    files = ""
-    for work in workspaces:
-        notes = Notes.objects.filter(workspace=work.id)
+    notes = Notes.objects.all()
     context = {'workspaces': workspaces, 'files':notes}
     return render(request, 'html/workspace-home.html', context)
 
@@ -286,8 +302,8 @@ def createWorkSpace(request):
 
         if form.is_valid():
             workspace = form.save()
-            messages.success(request, "Workspace created successfully!")
-            return redirect('view-work', name=name)
+            message = "Workspace created successfully"
+            return redirect(reverse('workspace') + '?message=' + message)
         else:
             messages.error(request, "Something wrong with the new data!")
     else:
@@ -302,8 +318,8 @@ def addNote(request, name):
         workspace = WorkSpace.objects.get(title=name)
     except WorkSpace.DoesNotExist:
         # Handle the case where the workspace with the given title doesn't exist
-        messages.error(request, "Workspace not found.")
-        return redirect('some_redirect_view')  # Replace with an appropriate view
+        message = "Workspace not found"
+        return redirect(reverse('workspace') + '?message=' + message)
 
     form = NotesForm()
 
@@ -319,8 +335,8 @@ def addNote(request, name):
             # Assuming you want to associate notes with the workspace using a ManyToManyField
             workspace.notes.add(note)
 
-            messages.success(request, "Note added successfully.")
-            return redirect('view-work', name=name)
+            message = "Note added successfully"
+            return redirect(reverse('view-work', name=name) + '?message=' + message)
         else:
             # Display form validation errors
             messages.error(request, "Invalid Input Data")
@@ -333,9 +349,80 @@ def addNote(request, name):
 def deleteWorkSpace(request, pk):
     workspace = WorkSpace.objects.get(id=pk)
     workspace.delete()
-    return redirect('workspace')
+    message = "Workspace deleted successfully"
+    return redirect(reverse('workspace') + '?message=' + message)
+
+@login_required(login_url='login')
+def Announcements(request):
+    return render(request, 'html/announcements-view.html')
 
 
+@login_required(login_url='login')
+def CreateMarks(request):
+    form = MarksForm()
+    assignment = Assignment.objects.get(name="Assign Test")
+    if request.method == "POST":
+        form = MarksForm(request.POST)
+        if form.is_valid():
+            marks = form.save(commit=False)
+            marks.save()
+            marks.assignments.set([assignment])
+            message = "Student Marks created successfully"
+            return redirect(reverse('marks', kwargs={'name': assignment.name}) + '?message=' + message)
+        else:
+            return messages.error('Record could not be added! check again the inputs')
+    return render(request, 'html/add-marks.html', {'form': form})
+
+@login_required(login_url='login')
+def viewMarks(request, name):
+    marks = Student.objects.filter(teacher=request.user)
+    students = Student.objects.all()
+    average_grade = 0
+    assignments = Assignment.objects.filter(host=request.user)
+    for assignment in assignments:
+        students = Student.objects.filter(assignments__id=assignment.id)
+        average_grade = Student.objects.aggregate(avg_grade=Avg('grade'))['avg_grade']
+    context = {'marks': marks, 'average': average_grade, 'assignments': assignments, 'students': students}
+    return render(request, 'html/view-marks.html', context)
+
+
+@login_required(login_url='login')
+def viewStudents(request, pk):
+    assignment = Assignment.objects.get(id=pk)
+    students = Student.objects.filter(assignments__id=pk)
+    average = 20
+    context = {'students': students, 'average': average, 'assignment':assignment}
+    return render(request, 'html/view-students.html', context)
+
+@login_required(login_url='login')
+def updateMarks(request, pk):
+    marks = Student.objects.get(id=pk)
+    if marks.teacher != request.user:
+        return HttpResponse("You don't have enough privileges to access this data!")
+    form = MarksForm(instance=marks)
+    if request.method == 'POST':
+        form = MarksForm(request.user)
+        if form.is_valid():
+            form = MarksForm(request.POST, instance=marks)
+            message = "Marks updated successfully"
+            marks = form.save(commit=False)
+            name = marks.assignments
+            assignment = Assignment.objects.get(id=name)
+# Redirect with message included as a query parameter
+
+            form.save()
+            return redirect(reverse('view-students', kwargs={'pk': assignment.id}) + '?message=' + message)
+    
+
+@login_required(login_url='login')
+def deleteMarks(request, pk):
+    marks = Student.objects.get(id=pk)
+    if marks.teacher != request.user:
+        return HttpResponse("User not allowed for this action")
+    pk = Student.objects.filter(assignment__Id=pk)
+    marks.delete()
+    message = "Student Marks deleted successfully!"
+    return redirect(reverse('view-students', kwargs={'pk': pk}) + '?message=' + message)
 
 
 

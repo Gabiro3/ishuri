@@ -10,7 +10,7 @@
     <ul class="side-menu">
         <li class="active"><a href="{% url 'teacher' %}"><i class='bx bxs-dashboard'></i>Dashboard</a></li>
         <li><a href="{% url 'view-assignments' %}"><i class='bx bx-task'></i>Assignments</a></li>
-        <li><a href="#"><i class='bx bx-analyse'></i>Announcements</a></li>
+        <li><a href="{% url 'announcements' %}"><i class='bx bx-analyse'></i>Announcements</a></li>
         <li><a href="{% url 'view-activities'%}"><i class='bx bx-list-ul'></i>Activities</a></li>
         <li><a href="{% url 'classes-view' %}"><i class='bx bx-group'></i>Classes</a></li>
         <li><a href="{% url 'workspace' %}"><i class='bx bx-file'></i>WorkSpaces</a></li>
@@ -45,7 +45,7 @@
             <a href="https://scribehow.com/shared/How_to_use_Ishuri_Bridge__nLeT6_mQTxCQ2FT-OW9ZRA" class="report">
                 <i class='bx bx-cloud-download'></i>
                 <span>How to use Ishuri</span>
-            </a>
+            </a>   
         </div>
 
         <!-- Insights -->
@@ -100,10 +100,10 @@
                 </span>
             </li>
         </ul>
-        
         <!-- End of Insights -->
 
         <div class="bottom-data">
+
             <div class="orders">
                 <div class="header">
                     <i class='bx bx-receipt'></i>
@@ -246,6 +246,12 @@
             }
         }
     });
+    var theme = localStorage.getItem('theme');
+    if(theme === 'dark') {
+        document.body.classList.add('dark');
+    } else {
+        document.body.classList.remove('dark');
+    }
 </script>
 
 

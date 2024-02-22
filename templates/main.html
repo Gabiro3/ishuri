@@ -19,6 +19,8 @@
           <div class="form-input">
               <input type="search" placeholder="Search...">
               <button class="search-btn" type="submit"><i class='bx bx-search'></i></button>
+              <input type="checkbox" id="theme-toggle" hidden>
+              <label for="theme-toggle" class="theme-toggle"></label>
           </div>
       </form>
       <a href="#" class="notif">
@@ -37,5 +39,41 @@
     if ("Notification" in window) {
         Notification.requestPermission();
     }
+  </script>
+  <script>
+    // Show the alert
+    document.getElementById('myAlert').style.display = 'block';
+  
+    // Hide the alert after 3 seconds
+    setTimeout(function() {
+        document.getElementById('notification-bar').style.display = 'none';
+    }, 3000);
+    function getQueryParam(param) {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    return urlParams.get(param);
+}
+
+function showNotification(message) {
+    var notificationBar = document.getElementById('notification-bar');
+    var notificationMessage = document.getElementById('notification-message');
+    var closeNotification = document.getElementById('close-notification');
+
+    notificationMessage.textContent = message;
+    notificationBar.style.display = 'block';
+
+    closeNotification.addEventListener('click', function() {
+        notificationBar.style.display = 'none';
+    });
+}
+
+// Get the message query parameter value from the URL
+const messageQueryParam = getQueryParam('message');
+
+// Display the message in the notification bar
+if (messageQueryParam) {
+    showNotification(messageQueryParam);
+}
+    
   </script>
 </body>

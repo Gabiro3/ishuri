@@ -11,9 +11,10 @@
         <li><a href="{% url 'view-assignments' %}"><i class='bx bx-task'></i>Assignments</a></li>
         <li><a href="{% url 'announcements' %}"><i class='bx bx-analyse'></i>Announcements</a></li>
         <li><a href="{% url 'view-activities'%}"><i class='bx bx-list-ul'></i>Activities</a></li>
-        <li class="active"><a href="{% url 'classes-view' %}"><i class='bx bx-group'></i>Classes</a></li>
+        <li><a href="{% url 'classes-view' %}"><i class='bx bx-group'></i>Classes</a></li>
+        <li><a href="{% url 'classes-view' %}"><i class='bx bx-group'></i>Marks</a></li>
         <li><a href="{% url 'workspace' %}"><i class='bx bx-file'></i>WorkSpaces</a></li>
-        <li><a href="{% url 'user-profile' request.user.id %}"><i class='bx bx-cog'></i>Settings</a></li>
+        <li><a href="{% url 'user-profile' request.user.id%}"><i class='bx bx-cog'></i>Settings</a></li>
     </ul>
     <ul class="side-menu">
         <li>
@@ -32,72 +33,72 @@
     <main>
         <div class="header">
             <div class="left">
-                <h1>Classes</h1>
+                <h1>{{assignment.name}}</h1>
                 <ul class="breadcrumb">
                     <li><a href="#">
                             Dashboard
                         </a></li>
                     /
-                    <li><a href="#" class="active">Classes</a></li>
+                    <li><a href="#" class="active">Student Marks</a></li>
                 </ul>
             </div>
-            <a href="{% url 'add-class' %}" class="report">
-                <i class='bx bx-cloud-download'></i>
-                <span>Add Class</span>
+            <a href="{% url 'add-marks' %}" class="report">
+                <i class='bx bx-file'></i>
+                <span>Add New Record</span>
             </a>
         </div>
-        <div id="notification-bar" class="notification-bar">
-            <span id="notification-message"></span>
-            <button id="close-notification">Close</button>
-        </div>
+
         <div class="bottom-data">
             <div class="orders">
                 <div class="header">
                     <i class='bx bx-receipt'></i>
-                    <h3>My Classes</h3>
+                    <h3>Assignment Marks</h3>
                     <i class='bx bx-filter'></i>
                     <i class='bx bx-search'></i>
                 </div>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Day</th>
-                            <th>School</th>
-                            <th>Class</th>
-                            <th>Class Hour</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for class in classes %}
-                        <tr>
-                            <td><strong>{{class.day}}</strong></td>
-                            <td>{{class.school}}</td>
-                            <td>{{class.name}}</td>
-                            <td>{{class.hour}}</td>
-                            <td><a href="{% url 'update-class' class.id %}"><i class='bx bx-pen' style="color: rgb(31, 129, 241);"></i></a></td>
-                            
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">First Name</th>
+                                <th scope="col">Last Name</th>
+                                <th scope="col">Marks</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for student in students %}
+                            <tr>
+                                <th scope="row">{{student.first_name}}</th>
+                                <td>{{student.last_name}}</td>
+                                <td>{{student.grade}}</td>
+                                <td><a href="{% url 'delete-assignment' assignment.id %}"><i class='bx bx-pen' style="color: rgb(31, 164, 241);"></i></a></td>
+                                <td><a href="{% url 'delete-assignment' assignment.id %}"><i class='bx bx-trash' style="color: rgb(241, 38, 31);"></i></a></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
-
+            <div id="notification-bar" class="notification-bar">
+                <span id="notification-message"></span>
+                <button id="close-notification">Close</button>
+            </div>
             <!-- Reminders -->
             <div class="reminders">
                 <div class="header">
                     <i class='bx bx-note'></i>
-                    <h3>Today's Classes</h3>
+                    <h3>Today's Activities</h3>
                     <i class='bx bx-filter'></i>
-                    <a href="{% url 'create-event' %}"><i class='bx bx-plus'></i></a>
+                    <a href="{% url 'create-event' %}"><i class='bx bx-plus'"></i></a>
                 </div>
                 <ul class="task-list">
-                    {% for class in  classes_today %}
+                    {% for field in  activities_today %}
                     <li class="completed">
                         <div class="task-title">
                             <i class='bx bx-check-circle'></i>
-                            <p>{{class.name}}</p>
+                            <p>{{field.name}}</p>
                         </div>
-                        <strong><p>At: {{class.hour}}</p></strong>
+                        <a><i class='bx bx-trash' style="color: rgb(241, 31, 31);"></i></a>
                     </li>
                     {% endfor %}
                 </ul>
@@ -108,8 +109,10 @@
         </div>
 
     </main>
+    
 
 </div>
+
 <script>
     if(localStorage.getItem('theme') == 'dark') {
         document.body.classList.add('dark');
@@ -143,5 +146,4 @@ if (messageQueryParam) {
     showNotification(messageQueryParam);
 }
 </script>
-
 {% endblock content %}

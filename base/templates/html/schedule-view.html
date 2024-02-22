@@ -9,7 +9,7 @@
     <ul class="side-menu">
         <li><a href="{% url 'teacher' %}"><i class='bx bxs-dashboard'></i>Dashboard</a></li>
         <li><a href="{% url 'view-assignments' %}"><i class='bx bx-task'></i>Assignments</a></li>
-        <li><a href="#"><i class='bx bx-analyse'></i>Announcements</a></li>
+        <li><a href="{% url 'announcements' %}"><i class='bx bx-analyse'></i>Announcements</a></li>
         <li class="active"><a href="{% url 'view-activities'%}"><i class='bx bx-list-ul'></i>Activities</a></li>
         <li><a href="{% url 'classes-view' %}"><i class='bx bx-group'></i>Classes</a></li>
         <li><a href="{% url 'workspace' %}"><i class='bx bx-file'></i>WorkSpaces</a></li>
@@ -55,28 +55,41 @@
                     <i class='bx bx-filter'></i>
                     <i class='bx bx-search'></i>
                 </div>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Day</th>
-                            <th>Activity</th>
-                            <th>Hour</th>
-                            
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for field in activities %}
-                        <tr>
-                            <td><strong>{{field.day}}</strong></td>
-                            <td>{{field.name}}</td>
-                            <td>{{field.hour}}</td>
-                            <td><a href="{% url 'delete-event' field.id %}"><i class='bx bx-trash' style="color: rgb(241, 31, 31);"></i></a></td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">First</th>
+                                <th scope="col">Last</th>
+                                <th scope="col">Handle</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">1</th>
+                                <td>Mark</td>
+                                <td>Otto</td>
+                                <td>@mdo</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">2</th>
+                                <td>Jacob</td>
+                                <td>Thornton</td>
+                                <td>@fat</td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <a class="active" id="insertRow" href="#">Add new row</a>
             </div>
-
+            <div id="notification-bar" class="notification-bar">
+                <span id="notification-message"></span>
+                <button id="close-notification">Close</button>
+            </div>
             <!-- Reminders -->
             <div class="reminders">
                 <div class="header">
@@ -107,5 +120,37 @@
 
 </div>
 
+<script>
+    if(localStorage.getItem('theme') == 'dark') {
+        document.body.classList.add('dark');
+    } else {
+        document.body.classList.remove('dark');
+    }
+    function getQueryParam(param) {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    return urlParams.get(param);
+}
 
+function showNotification(message) {
+    var notificationBar = document.getElementById('notification-bar');
+    var notificationMessage = document.getElementById('notification-message');
+    var closeNotification = document.getElementById('close-notification');
+
+    notificationMessage.textContent = message;
+    notificationBar.style.display = 'block';
+
+    closeNotification.addEventListener('click', function() {
+        notificationBar.style.display = 'none';
+    });
+}
+
+// Get the message query parameter value from the URL
+const messageQueryParam = getQueryParam('message');
+
+// Display the message in the notification bar
+if (messageQueryParam) {
+    showNotification(messageQueryParam);
+}
+</script>
 {% endblock content %}

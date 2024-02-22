@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
     "builds": [{
         "src": "Ishuri/wsgi.py",
         "use": "@vercel/python",
@@ -11,3 +12,18 @@
         }
     ]
 }
+=======
+  "builds": [
+    {
+      "src": "Ishuri/wsgi.py",
+      "use": "@vercel/python"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "Ishuri/wsgi.py"
+    }
+  ]
+}
+>>>>>>> 5facd20e6d1d4d02f0a3fa877fa989b45fe46a11
