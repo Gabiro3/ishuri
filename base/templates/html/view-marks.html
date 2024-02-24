@@ -12,7 +12,7 @@
         <li><a href="{% url 'announcements' %}"><i class='bx bx-analyse'></i>Announcements</a></li>
         <li><a href="{% url 'view-activities'%}"><i class='bx bx-list-ul'></i>Activities</a></li>
         <li><a href="{% url 'classes-view' %}"><i class='bx bx-group'></i>Classes</a></li>
-        <li><a href="{% url 'classes-view' %}"><i class='bx bx-group'></i>Marks</a></li>
+        <li class="active"><a href="{% url 'all-marks' %}"><i class='bx bx-pen'></i>Marks</a></li>
         <li><a href="{% url 'workspace' %}"><i class='bx bx-file'></i>WorkSpaces</a></li>
         <li><a href="{% url 'user-profile' request.user.id%}"><i class='bx bx-cog'></i>Settings</a></li>
     </ul>
@@ -72,7 +72,7 @@
                                 <td>{{students.count}}</td>
                                 <td>{{average}}</td>
                                 <td><a href="{% url 'students' assignment.id %}" style="color: rgb(0, 255, 13)"><i class='bx bx-file'></i></a></td>
-                                <td><a href="{% url 'teacher' %}" style="color: red"><i class='bx bx-trash'></i></a></td>
+                                <td><a href="{% url 'delete-all-marks' assignment.id %}" style="color: red"><i class='bx bx-trash'></i></a></td>
                             {% endfor %}
                         </tbody>
                     </table>

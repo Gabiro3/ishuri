@@ -37,7 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'base.apps.BaseConfig'
+    'base.apps.BaseConfig',
+    'rest_framework',
+    'corsheaders',
 ]
 AUTH_USER_MODEL = 'base.Teacher'
 MIDDLEWARE = [
@@ -134,3 +136,5 @@ MEDIA_ROOT = BASE_DIR / 'static/images'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CORS_ALLOW_ALL_ORIGINS = True

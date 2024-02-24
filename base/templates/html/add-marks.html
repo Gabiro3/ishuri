@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon" />
     <link rel="stylesheet" href="{% static 'style01.css' %}" />
-    <title>Ishuri Bridge | Add Notes</title>
+    <title>Ishuri Bridge | Marks</title>
   </head>
   <body>
     <main class="auth layout">
@@ -29,11 +29,11 @@
         </ul>
             {% endif %}
             <div class="layout__boxTitle">
-              <h3 style="color: black;">Add Notes</h3>
+              <h3 style="color: black;">Add Marks</h3>
             </div>
           </div>
           <div class="layout__body">
-            <h2 class="auth__tagline">Add Notes to {{workspace.title}}</h2>
+            <h2 class="auth__tagline">Add Student Marks</h2>
 
             <form class="form" action="" method="POST" enctype="multipart/form-data">
               {% csrf_token %}

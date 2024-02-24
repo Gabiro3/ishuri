@@ -12,7 +12,7 @@
         <li><a href="{% url 'announcements' %}"><i class='bx bx-analyse'></i>Announcements</a></li>
         <li><a href="{% url 'view-activities'%}"><i class='bx bx-list-ul'></i>Activities</a></li>
         <li><a href="{% url 'classes-view' %}"><i class='bx bx-group'></i>Classes</a></li>
-        <li><a href="{% url 'classes-view' %}"><i class='bx bx-group'></i>Marks</a></li>
+        <li class="active"><a href="{% url 'all-marks' %}"><i class='bx bx-pen'></i>Marks</a></li>
         <li><a href="{% url 'workspace' %}"><i class='bx bx-file'></i>WorkSpaces</a></li>
         <li><a href="{% url 'user-profile' request.user.id%}"><i class='bx bx-cog'></i>Settings</a></li>
     </ul>
@@ -71,8 +71,8 @@
                                 <th scope="row">{{student.first_name}}</th>
                                 <td>{{student.last_name}}</td>
                                 <td>{{student.grade}}</td>
-                                <td><a href="{% url 'delete-assignment' assignment.id %}"><i class='bx bx-pen' style="color: rgb(31, 164, 241);"></i></a></td>
-                                <td><a href="{% url 'delete-assignment' assignment.id %}"><i class='bx bx-trash' style="color: rgb(241, 38, 31);"></i></a></td>
+                                <td><a href="{% url 'update-marks' student.id %}"><i class='bx bx-pen' style="color: rgb(31, 164, 241);"></i></a></td>
+                                <td><a href="{% url 'delete-marks' student.id %}"><i class='bx bx-trash' style="color: rgb(241, 38, 31);"></i></a></td>
                             </tr>
                             {% endfor %}
                         </tbody>

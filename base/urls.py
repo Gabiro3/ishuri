@@ -39,6 +39,10 @@ urlpatterns = [
     path('announcements/', views.Announcements, name="announcements"),
 
     path('marks/<str:name>/', views.viewMarks, name="marks"),
+    path('all-marks/', views.allMarks, name="all-marks"),
     path('add-marks/', views.CreateMarks, name="add-marks"),
     path('view-students/<str:pk>', views.viewStudents, name="students"),
+    path('update-marks/<str:pk>', views.updateMarks, name="update-marks"),
+    path('delete-marks/<str:pk>/', views.deleteMarks, name="delete-marks"),
+    path('delete-all-marks/<str:pk>/', views.deleteAllMarks, name="delete-all-marks")
 ]

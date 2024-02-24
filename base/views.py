@@ -301,7 +301,9 @@ def createWorkSpace(request):
         name = request.POST.get('title')
 
         if form.is_valid():
-            workspace = form.save()
+            workspace = form.save(commit=False)
+            workspace.host = request.user
+            workspace.save()
             message = "Workspace created successfully"
             return redirect(reverse('workspace') + '?message=' + message)
         else:
@@ -365,6 +367,7 @@ def CreateMarks(request):
         form = MarksForm(request.POST)
         if form.is_valid():
             marks = form.save(commit=False)
+            marks.teacher = request.user
             marks.save()
             marks.assignments.set([assignment])
             message = "Student Marks created successfully"
@@ -384,7 +387,17 @@ def viewMarks(request, name):
         average_grade = Student.objects.aggregate(avg_grade=Avg('grade'))['avg_grade']
     context = {'marks': marks, 'average': average_grade, 'assignments': assignments, 'students': students}
     return render(request, 'html/view-marks.html', context)
-
+@login_required(login_url='login')
+def allMarks(request):
+    marks = Student.objects.filter(teacher=request.user)
+    students = Student.objects.all()
+    average_grade = 0
+    assignments = Assignment.objects.filter(host=request.user)
+    for assignment in assignments:
+        students = Student.objects.filter(assignments__id=assignment.id)
+        average_grade = Student.objects.aggregate(avg_grade=Avg('grade'))['avg_grade']
+    context = {'marks': marks, 'average': average_grade, 'assignments': assignments, 'students': students}
+    return render(request, 'html/view-marks.html', context)
 
 @login_required(login_url='login')
 def viewStudents(request, pk):
@@ -412,6 +425,8 @@ def updateMarks(request, pk):
 
             form.save()
             return redirect(reverse('view-students', kwargs={'pk': assignment.id}) + '?message=' + message)
+        context = {'form': form}
+    return render(request, 'html/add-marks.html', context)
     
 
 @login_required(login_url='login')
@@ -419,11 +434,15 @@ def deleteMarks(request, pk):
     marks = Student.objects.get(id=pk)
     if marks.teacher != request.user:
         return HttpResponse("User not allowed for this action")
-    pk = Student.objects.filter(assignment__Id=pk)
     marks.delete()
     message = "Student Marks deleted successfully!"
-    return redirect(reverse('view-students', kwargs={'pk': pk}) + '?message=' + message)
+    return redirect(reverse('students', kwargs={'pk': pk}) + '?message=' + message)
 
 
 
-
+@login_required(login_url='login')
+def deleteAllMarks(request, pk):
+    marks = Student.objects.filter(Assignment__id=pk)
+    marks.delete()
+    message = "Marks deleted successfully!"
+    return redirect(reverse('view-assignments') + '?message' + message)
