@@ -30,12 +30,22 @@
 
             <form class="form" action="" method="POST">
               {% csrf_token %}
-              {% for field in form %}
               <div class="form__group form__group">
-                <label for="room_name">{{field.label}}</label>
-                {{field}}
+                <label for="room_name">Assignment Title</label>
+                <input required type="text" value="{{assignment.name}}" name="name" placeholder="e.g. Chemistry Work"/>
               </div>
-              {% endfor %}
+              <div class="form__group form__group">
+                <label for="room_name">Assignment Description</label>
+                <input required type="text" value="{{assignment.description}}" name="description" placeholder="Description goes here"/>
+              </div>
+              <div class="form__group form__group">
+                <label for="room_name">Assigned Class</label>
+                <input required type="number" value="{{assignment.assigned_class}}" name="assigned_class" placeholder="e.g. 6 for Senior 6"/>
+              </div>
+              <div class="form__group form__group">
+                <label for="room_name">Submission Date</label>
+                <input required type="date" value="{{assignment.submission_date}}" name="submission_date" />
+              </div>
 
               <button class="btn btn--main" type="submit">
                 <svg
